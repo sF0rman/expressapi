@@ -1,14 +1,18 @@
-import express from 'express';
+import express, { Router } from 'express';
 const router = express.Router();
 
-const createRoutes = (app) => {
-  router.get('/status', (req, res, next) => {
+/**
+ * Add API routes to file.
+ * @returns Express Router.
+ * @author sForman
+ */
+const createRoutes = (): Router => {
+  router.get('/status', (req, res, next): void => {
     res.send('API is stable and working.');
   })
 
   // Setup Routes
   router.use('/auth', require('./routes/auth'));
-
 
   return router;
 }
