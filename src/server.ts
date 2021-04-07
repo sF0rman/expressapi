@@ -5,6 +5,7 @@ import { createRoutes } from './routing/routes';
 import { createDatabase, DatabaseConnection } from './database/database';
 
 // Start Server
+console.clear();
 console.log('Server Starting...');
 const app = express();
 const router: Router = createRoutes();

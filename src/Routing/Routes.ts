@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 const router = express.Router();
 
 /**
- * Add API routes to file.
+ * Add API routes
  * @returns Express Router.
  * @author sForman
  */

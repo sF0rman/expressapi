@@ -10,8 +10,8 @@ export interface DatabaseConnection {
 }
 
 const createDatabase = async (connection: DatabaseConnection): Promise<void> => {
-  const {type, host, port, user, pass, name} = connection;
-  const sequelize = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
+  const {type, host, port, user, pass, name}: DatabaseConnection = connection;
+  const sequelize: Sequelize = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
 
   try {
     await sequelize.authenticate();
