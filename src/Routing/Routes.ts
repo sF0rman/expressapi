@@ -21,8 +21,15 @@ const createRoutes = (): Router => {
   return router;
 }
 
+class InvalidRouteError extends ErrorResponse {
+  name: string = 'InvalidRouteError';
+  constructor() {
+    super('Route not found', 404);
+  }
+}
+
 const invalidRoute = (req, res, next) => {
-  next(new ErrorResponse(`Path to ${req.originalUrl.replace('//', '/')} not found`, 404));
+  next(new InvalidRouteError());
 }
 
 export {

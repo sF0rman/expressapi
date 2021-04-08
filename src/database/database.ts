@@ -1,26 +1,12 @@
-import {Sequelize} from 'sequelize';
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-export interface DatabaseConnection {
-  type: string;
-  host: string;
-  port: string;
-  user: string;
-  pass: string;
-  name: string;
-}
+dotenv.config({ path: './config/config.env' });
+const type: string = process.env.DB_TYPE;
+const host: string = process.env.DB_HOST;
+const port: string = process.env.DB_PORT;
+const user: string = process.env.DB_USER;
+const pass: string = process.env.DB_PASS;
+const name: string = process.env.DB_NAME;
 
-const createDatabase = async (connection: DatabaseConnection): Promise<void> => {
-  const {type, host, port, user, pass, name}: DatabaseConnection = connection;
-  const sequelize: Sequelize = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
-
-  try {
-    await sequelize.authenticate();
-    console.log(`Connected to database: ${name}`);
-  } catch (err) {
-    console.error(`Unable to connect to database: ${name}`);
-  }
-}
-
-export {
-  createDatabase
-}
+module.exports = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
