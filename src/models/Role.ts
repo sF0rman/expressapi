@@ -13,7 +13,7 @@ interface RoleData extends Model {
 
 const Roles = db.define<RoleData>('Role', {
   id: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true
   },
@@ -21,6 +21,8 @@ const Roles = db.define<RoleData>('Role', {
     type: DataTypes.ENUM(UserRoles.admin, UserRoles.user),
     allowNull: false
   }
+}, {
+  timestamps: false
 });
 
 export {

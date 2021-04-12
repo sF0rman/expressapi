@@ -24,7 +24,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
       } as UserData;
 
       const user = await User.create(data);
-      res.status(HTTPCode.Created).send(user);
+      res.status(HTTPCode.Created).send({ success: true});
     } else {
       return next(new BadRequestError());
     }

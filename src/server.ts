@@ -19,7 +19,7 @@ console.log('Starting...'.green);
 const boot = () => {
   // Start Database
   db.authenticate().then(() => {
-    db.sync();
+    db.sync({alter: true}); // force to reset db, alter to update tables.
   }).catch(err => {
     console.error('Unable to connect to the database:', err);
   });

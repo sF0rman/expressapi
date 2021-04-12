@@ -7,7 +7,7 @@ import { genSalt, hash } from 'bcryptjs';
 
 interface UserData extends Model {
   email: string;
-  password: string;
+  password?: string;
   role?: UserRoles;
 }
 
@@ -45,10 +45,16 @@ const User = db.define<UserData>('User', {
     type: DataTypes.ENUM(UserRoles.admin, UserRoles.user),
     allowNull: false,
     defaultValue: UserRoles.user
+  },
+  resetPasswordToken: {
+    type: DataTypes.STRING
+  },
+  resetPasswordExpire: {
+    type: DataTypes.DATE
   }
 }, {
   defaultScope: {
-    attributes: { exclude: ['password'] }
+    attributes: { exclude: ['password', 'resetPasswordToken', 'resetPasswordExpire'] }
   },
   hooks: {
     beforeCreate: async (user: UserData, options) => {
