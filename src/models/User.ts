@@ -1,4 +1,4 @@
-import {db} from '../database/database';
+import { db } from '../database/database';
 import { DataTypes } from 'sequelize';
 import { ErrorResponse, ErrorType } from '../controller/ErrorHandler';
 import { HTTPCode } from './HTTPCodes';
@@ -12,7 +12,7 @@ interface UserData {
 
 class UserExistsError extends ErrorResponse {
   name: string = ErrorType.UserExistsError;
-  constructor(message: string){
+  constructor(message: string) {
     super(`User with supplied email (${message}) already exists`, HTTPCode.Conflict);
   }
 }
@@ -29,14 +29,14 @@ const User = db.define('User', {
     allowNull: false,
     unique: true,
     validate: {
-      notNull: {msg: 'Email is required'}
+      notNull: { msg: 'Email is required' }
     }
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      notNull: {msg: 'Password is required'}
+      notNull: { msg: 'Password is required' }
     }
   },
   role: {

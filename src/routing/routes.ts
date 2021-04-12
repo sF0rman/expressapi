@@ -12,7 +12,7 @@ class InvalidRouteError extends ErrorResponse {
 
 class ClientError extends ErrorResponse {
   name: string = ErrorType.ClientError;
-  constructor(message: string){
+  constructor(message: string) {
     super(message, HTTPCode.BadRequest);
   }
 }

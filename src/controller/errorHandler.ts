@@ -27,6 +27,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
       break;
     default:
       // Sequelize Errors
+      break;
   }
 
   res.status(err.statusCode || 500).json({
