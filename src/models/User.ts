@@ -3,7 +3,7 @@ import { DataTypes, ModelDefined, Model } from 'sequelize';
 import { ErrorResponse, ErrorType } from '../controller/ErrorHandler';
 import { HTTPCode } from './HTTPCodes';
 import { UserRoles } from './Role';
-import { bcrypt } from 'bcryptjs';
+import { genSalt, hash } from 'bcryptjs';
 
 interface UserData extends Model {
   email: string;
@@ -52,8 +52,8 @@ const User = db.define<UserData>('User', {
   },
   hooks: {
     beforeCreate: async (user: UserData, options) => {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.has(user.password, salt);
+      const salt = await genSalt(10);
+      user.password = await hash(user.password, salt);
     }
   }
 });
