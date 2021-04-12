@@ -1,14 +1,19 @@
 import { db } from '../database/database';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 enum UserRoles {
   admin = 'ADMIN',
   user = 'USER'
 }
 
-const Roles = db.define('Role', {
+interface RoleData extends Model {
+  id: number;
+  role: UserRoles;
+}
+
+const Roles = db.define<RoleData>('Role', {
   id: {
-    type: DataTypes.STRING,
+    type: DataTypes.NUMBER,
     allowNull: false,
     primaryKey: true
   },

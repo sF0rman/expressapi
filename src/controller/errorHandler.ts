@@ -1,4 +1,5 @@
 import { ErrorRequestHandler } from 'express';
+import { HTTPCode } from '../models/HTTPCodes';
 
 enum ErrorType {
   InvalidRoute = 'InvalidRouteError',
@@ -13,6 +14,12 @@ class ErrorResponse extends Error {
   constructor(message: string, statusCode: number) {
     super(message);
     this.statusCode = statusCode;
+  }
+}
+
+class BadRequestError extends ErrorResponse {
+  constructor(){
+    super('Bad Request', HTTPCode.BadRequest)
   }
 }
 
@@ -39,5 +46,6 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 export {
   ErrorType,
   errorHandler,
-  ErrorResponse
+  ErrorResponse,
+  BadRequestError
 }

@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import {json} from 'body-parser';
 import dotenv from 'dotenv';
 import { Color } from 'colors';
 const colors: Color = require('colors');
@@ -26,6 +27,7 @@ const boot = () => {
   // Start server
   const app = express();
   const router: Router = createRoutes();
+  app.use(json());
   app.use('/api', router);
   app.use(errorHandler);
 

@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
+import { HTTPCode } from '../../models/HTTPCodes';
 import { UserRoles } from "../../models/Role";
 import { isValidUserData, User, UserData, UserExistsError } from '../../models/User';
+import { BadRequestError } from '../errorHandler';
 
 /**
  * Create a new user
@@ -10,19 +12,21 @@ import { isValidUserData, User, UserData, UserExistsError } from '../../models/U
  */
 const register: RequestHandler = async (req, res, next): Promise<void> => {
   try {
-    if(isValidUserData(req.query)) {
-      const found: any = await User.findOne({where: {email: req.query.email}});
-      if(found) {
-        return next(new UserExistsError(req.query.email.toString()));
+    if (req.body && isValidUserData(req.body)) {
+      const found: any = await User.findOne({ where: { email: req.body.email } });
+      if (found) {
+        return next(new UserExistsError(req.body.email.toString()));
       }
       const data: UserData = {
-        email: req.query.email,
-        password: req.query.password,
+        email: req.body.email,
+        password: req.body.password,
         role: UserRoles.user
       } as UserData;
 
       const user = await User.create(data);
-      res.send(user);
+      res.status(HTTPCode.Created).send(user);
+    } else {
+      return next(new BadRequestError());
     }
 
   } catch (err) {
