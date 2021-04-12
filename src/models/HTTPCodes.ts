@@ -1,0 +1,12 @@
+export enum HTTPCode {
+  OK = 200,
+  Created = 201,
+  Accepted = 202,
+  NoContent = 204,
+  BadRequest = 400,
+  Forbidden = 403,
+  NotFound = 404,
+  Conflict = 409,
+  ServerError = 500,
+  NotImplemented = 501
+}

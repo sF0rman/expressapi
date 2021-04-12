@@ -1,11 +1,20 @@
-const db = require('../database/database');
+import {db} from '../database/database';
 import { DataTypes } from 'sequelize';
+import { ErrorResponse, ErrorType } from '../controller/ErrorHandler';
+import { HTTPCode } from './HTTPCodes';
 import { UserRoles } from './Role';
 
 interface UserData {
   email: string,
   password: string,
-  role: UserRoles
+  role?: UserRoles
+}
+
+class UserExistsError extends ErrorResponse {
+  name: string = ErrorType.UserExistsError;
+  constructor(message: string){
+    super(`User with supplied email (${message}) already exists`, HTTPCode.Conflict);
+  }
 }
 
 const User = db.define('User', {
@@ -20,14 +29,14 @@ const User = db.define('User', {
     allowNull: false,
     unique: true,
     validate: {
-      notNull: 'Email is required'
+      notNull: {msg: 'Email is required'}
     }
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      notNull: 'Password is required'
+      notNull: {msg: 'Password is required'}
     }
   },
   role: {
@@ -37,7 +46,13 @@ const User = db.define('User', {
   }
 });
 
+const isValidUserData = (obj: any): obj is UserData => {
+  return 'email' in obj;
+}
+
 export {
   UserData,
-  User
+  User,
+  UserExistsError,
+  isValidUserData
 }

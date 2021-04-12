@@ -6,7 +6,8 @@ const colors: Color = require('colors');
 import { errorHandler } from './controller/ErrorHandler';
 
 import { createRoutes } from './routing/routes';
-const db = require('./database/database');
+// const db = require('./database/database');
+import {db} from './database/database';
 
 // Load environment variables.
 dotenv.config({ path: './config/config.env' });

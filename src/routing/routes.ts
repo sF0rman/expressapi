@@ -1,6 +1,21 @@
 import express, { Router } from 'express';
-import { ErrorResponse } from '../controller/errorHandler';
+import { HTTPCode } from '../models/HTTPCodes';
+import { ErrorResponse, ErrorType } from '../controller/errorHandler';
 const router = express.Router();
+
+class InvalidRouteError extends ErrorResponse {
+  name: string = ErrorType.InvalidRoute;
+  constructor() {
+    super('Route not found', HTTPCode.NotFound);
+  }
+}
+
+class ClientError extends ErrorResponse {
+  name: string = ErrorType.ClientError;
+  constructor(message: string){
+    super(message, HTTPCode.BadRequest);
+  }
+}
 
 /**
  * Add API routes
@@ -19,13 +34,6 @@ const createRoutes = (): Router => {
   router.all('*', invalidRoute);
 
   return router;
-}
-
-class InvalidRouteError extends ErrorResponse {
-  name: string = 'InvalidRouteError';
-  constructor() {
-    super('Route not found', 404);
-  }
 }
 
 const invalidRoute = (req, res, next) => {

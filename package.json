@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Base Express API",
   "main": "dist/server.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc"

@@ -1,4 +1,4 @@
-const db = require('../database/database');
+import {db} from '../database/database';
 import { DataTypes } from 'sequelize';
 
 enum UserRoles {

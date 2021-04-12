@@ -1,8 +1,7 @@
 import { RequestHandler } from "express";
-import { UUIDV4 } from "sequelize/types";
 import { UserRoles } from "../../models/Role";
-const db = require('../../database/database');
-import {User, UserData} from '../../models/User';
+import { isValidUserData, User, UserData, UserExistsError } from '../../models/User';
+
 /**
  * Create a new user
  * @param req 
@@ -10,16 +9,25 @@ import {User, UserData} from '../../models/User';
  * @param next 
  */
 const register: RequestHandler = async (req, res, next): Promise<void> => {
-  const users: Array<UserData> = User.findAll();
-  console.log(users);
+  try {
+    if(isValidUserData(req.query)) {
+      const found: any = await User.findOne({where: {email: req.query.email}});
+      if(found) {
+        return next(new UserExistsError(req.query.email.toString()));
+      }
+      const data: UserData = {
+        email: req.query.email,
+        password: req.query.password,
+        role: UserRoles.user
+      } as UserData;
 
-  const data: UserData = {
-    email: 'sebastian@forman.no',
-    password: 'asdasd',
-    role: UserRoles.admin
+      const user = await User.create(data);
+      res.send(user);
+    }
+
+  } catch (err) {
+    next(err);
   }
-  const user = await User.create(data);
-  res.send(user);
 }
 
 /**

@@ -9,4 +9,8 @@ const user: string = process.env.DB_USER;
 const pass: string = process.env.DB_PASS;
 const name: string = process.env.DB_NAME;
 
-module.exports = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
+// module.exports = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
+const db = new Sequelize(`${type}://${user}:${pass}@${host}:${port}/${name}`);
+export {
+  db
+}
