@@ -19,7 +19,7 @@ console.log('Starting...'.green);
 const boot = () => {
   // Start Database
   db.authenticate().then(() => {
-    db.sync({alter: true}); // force to reset db, alter to update tables.
+    db.sync(); // force to reset db, alter to update tables.
   }).catch(err => {
     console.error('Unable to connect to the database:', err);
   });
@@ -27,7 +27,7 @@ const boot = () => {
   // Start server
   const app = express();
   const router: Router = createRoutes();
-  app.use(json());
+  app.use(express.json());
   app.use('/api', router);
   app.use(errorHandler);
 
