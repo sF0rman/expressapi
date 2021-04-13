@@ -1,7 +1,7 @@
 import { BadRequestError, Resource, ResourceNotFoundError } from "../utils/errorHandler";
 import { User } from '../models/User';
 import { HTTPCode } from "../models/HTTPCodes";
-import { isValidUUID } from "../utils/utils";
+import { isValidUUID, okResponse } from "../utils/utils";
 
 /**
  * @description Get logged in user
@@ -18,7 +18,7 @@ const getSelf = async (req, res, next): Promise<void> => {
       return next(new ResourceNotFoundError(Resource.User))
     }
 
-    res.status(HTTPCode.OK).send({ success: true, data: user });
+    res.status(HTTPCode.OK).send(okResponse(user));
   } catch (err) {
     next(err);
   }
@@ -40,7 +40,7 @@ const getUserById = async (req, res, next): Promise<void> => {
       return next(new ResourceNotFoundError(Resource.User))
     }
 
-    res.status(HTTPCode.OK).send({ success: true, data: user });
+    res.status(HTTPCode.OK).send(okResponse(user));
   } catch (err) {
     next(err);
   }

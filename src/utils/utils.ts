@@ -9,6 +9,19 @@ const isValidUUID = (uuid: string): boolean => {
   return UUIDRegex.test(uuid);
 }
 
+const okResponse = (data: Array<object> | object): object => {
+  let totalRows = 1;
+  if(Array.isArray(data)) {
+    totalRows = data.length;
+  }
+
+  return {
+    success: true,
+    data,
+    totalRows
+  }
+}
+
 enum DateUnits {
   sec = 'ss',
   min = 'mm',
@@ -48,6 +61,7 @@ const addToDate = (amount: number, type?: DateUnits): number => {
 export {
   isValidEmail,
   isValidUUID,
+  okResponse,
   addToDate,
   DateUnits
 }
