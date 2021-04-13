@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { Color } from 'colors';
 const colors: Color = require('colors');
 
-import { errorHandler } from './controller/ErrorHandler';
+import { errorHandler } from './utils/errorHandler';
 
 import { createRoutes } from './routing/routes';
 import { db } from './database/database';

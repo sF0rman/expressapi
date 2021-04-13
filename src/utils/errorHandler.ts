@@ -6,7 +6,8 @@ enum ErrorType {
   UserExistsError = 'UserExistsError',
   AuthenticationError = 'AuthenticationError',
   PermissionError = 'PermissionError',
-  ClientError = 'ClientError'
+  ClientError = 'ClientError',
+  BadRequestError = 'BadRequestError'
 }
 
 class ErrorResponse extends Error {
@@ -18,8 +19,9 @@ class ErrorResponse extends Error {
 }
 
 class BadRequestError extends ErrorResponse {
-  constructor(){
-    super('Bad Request', HTTPCode.BadRequest)
+  name: ErrorType.BadRequestError;
+  constructor(type?: string) {
+    super(`Bad Request${type && ': Invalid ' + type}` , HTTPCode.BadRequest);
   }
 }
 
@@ -29,6 +31,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     case ErrorType.UserExistsError:
     case ErrorType.AuthenticationError:
     case ErrorType.PermissionError:
+    case ErrorType.BadRequestError:
       console.log(err.name.red);
       break;
     default:

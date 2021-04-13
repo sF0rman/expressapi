@@ -1,14 +1,16 @@
 import { db } from '../database/database';
 import { DataTypes, ModelDefined, Model } from 'sequelize';
-import { ErrorResponse, ErrorType } from '../controller/ErrorHandler';
+import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 import { HTTPCode } from './HTTPCodes';
 import { UserRoles } from './Role';
 import { genSalt, hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 interface UserData extends Model {
   email: string;
   password?: string;
   role?: UserRoles;
+  getJwt?: () => string;
 }
 
 
@@ -61,8 +63,14 @@ const User = db.define<UserData>('User', {
       const salt = await genSalt(10);
       user.password = await hash(user.password, salt);
     }
-  }
+  },
 });
+
+User.prototype.getJwt = function () {
+  return sign({ id: this.id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE
+  })
+}
 
 const isValidUserData = (obj: any): obj is UserData => {
   return 'email' in obj;

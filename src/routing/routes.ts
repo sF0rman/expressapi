@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { HTTPCode } from '../models/HTTPCodes';
-import { ErrorResponse, ErrorType } from '../controller/errorHandler';
+import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 const router = express.Router();
 
 class InvalidRouteError extends ErrorResponse {
