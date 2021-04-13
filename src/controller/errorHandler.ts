@@ -24,16 +24,15 @@ class BadRequestError extends ErrorResponse {
 }
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err.stack.red ?? 'Unknown Server Error'.red);
-
   switch (err.name) {
     case ErrorType.InvalidRoute:
     case ErrorType.UserExistsError:
     case ErrorType.AuthenticationError:
     case ErrorType.PermissionError:
+      console.log(err.name.red);
       break;
     default:
-      // Sequelize Errors
+      console.log(err.stack.red ?? 'Unknown Server Error'.red);
       break;
   }
 
