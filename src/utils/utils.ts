@@ -13,6 +13,9 @@ const okResponse = (data: Array<object> | object): object => {
   let totalRows = 1;
   if(Array.isArray(data)) {
     totalRows = data.length;
+  } else if((Object.keys(data).length < 1)) {
+    // In the case we logout or return no data, set totalRows 0.
+    totalRows = 0;
   }
 
   return {

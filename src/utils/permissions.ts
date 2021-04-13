@@ -32,6 +32,7 @@ const protect = async (req, res, next): Promise<void> => {
   } else if (req.cookies.token) {
     token = req.cookies.token;
   }
+
   if (!token) { return next(new PermissionError(Permissions.notLoggedIn)); }
 
   try {
@@ -40,7 +41,7 @@ const protect = async (req, res, next): Promise<void> => {
 
     next();
   } catch (err) {
-    next(err);
+    next(new PermissionError(Permissions.notLoggedIn));
   }
 }
 

@@ -1,5 +1,5 @@
 import { RequestHandler, Response } from "express";
-import { addToDate, DateUnits, isValidEmail } from "../utils/utils";
+import { addToDate, DateUnits, isValidEmail, okResponse } from "../utils/utils";
 import { HTTPCode } from '../models/HTTPCodes';
 import { UserRoles } from "../models/Role";
 import { isValidUserData, User, UserData, UserExistsError } from '../models/User';
@@ -89,13 +89,17 @@ const login: RequestHandler = async (req, res, next): Promise<void> => {
 }
 
 /**
- * Perform logout action
- * @param req 
- * @param res 
- * @param next 
- */
+ * @description Logout / Clear Auth cookie
+ * @route POST /api/auth/logout 
+ * @access Public  
+ **/
 const logout: RequestHandler = (req, res, next): void => {
-  res.send('Logout');
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + addToDate(10, DateUnits.sec)),
+    httpOnly: true
+  });
+
+  res.status(HTTPCode.OK).send(okResponse({}));
 }
 
 const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) => {
