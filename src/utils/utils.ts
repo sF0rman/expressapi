@@ -40,8 +40,8 @@ const addToDate = (amount: number, type?: DateUnits): number => {
   }
 }
 
-  export {
-    isValidEmail,
-    addToDate,
-    DateUnits
-  }
+export {
+  isValidEmail,
+  addToDate,
+  DateUnits
+}
