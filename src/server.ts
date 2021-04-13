@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import {json} from 'body-parser';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { Color } from 'colors';
 const colors: Color = require('colors');
 
@@ -28,6 +29,7 @@ const boot = () => {
   const app = express();
   const router: Router = createRoutes();
   app.use(express.json());
+  app.use(cookieParser());
   app.use('/api', router);
   app.use(errorHandler);
 

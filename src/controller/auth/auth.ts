@@ -1,9 +1,10 @@
-import { RequestHandler } from "express";
-import { isValidEmail } from "../../utils/utils";
+import { RequestHandler, Response, response } from "express";
+import { addToDate, DateUnits, isValidEmail } from "../../utils/utils";
 import { HTTPCode } from '../../models/HTTPCodes';
 import { UserRoles } from "../../models/Role";
 import { isValidUserData, User, UserData, UserExistsError } from '../../models/User';
 import { BadRequestError, ErrorResponse, ErrorType } from '../../utils/errorHandler';
+import { ServerResponse } from "node:http";
 
 enum AuthenticationErrors {
   noUser,
@@ -45,8 +46,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
       } as UserData;
 
       const user = await User.create(data);
-      const token = user.getJwt();
-      res.status(HTTPCode.Created).send({ success: true, token });
+      sendTokenResponse(user, HTTPCode.Created, res);
     } else {
       return next(new BadRequestError());
     }
@@ -82,8 +82,7 @@ const login: RequestHandler = async (req, res, next): Promise<void> => {
       return next(new AuthenticationError(AuthenticationErrors.badPassword));
     }
 
-    const token = user.getJwt();
-    res.status(HTTPCode.Accepted).send({ success: true, token });
+    sendTokenResponse(user, HTTPCode.Accepted, res);
 
   } catch (err) {
     next(err);
@@ -98,6 +97,25 @@ const login: RequestHandler = async (req, res, next): Promise<void> => {
  */
 const logout: RequestHandler = (req, res, next): void => {
   res.send('Logout');
+}
+
+const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) => {
+  const token = user.getJwt();
+
+  const expireTime = parseInt(process.env.COOKIE_EXPIRE);
+
+  const cookieOptions = {
+    expires: new Date(Date.now() + addToDate(expireTime, DateUnits.day)),
+    httpOnly: true
+  };
+
+  res
+    .status(statusCode)
+    .cookie('token', token, cookieOptions)
+    .json({
+      success: true,
+      token
+    });
 }
 
 export {
