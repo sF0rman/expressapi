@@ -44,7 +44,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
         role: UserRoles.user
       } as UserData;
 
-      const user = await User.create(data);
+      const user: UserData = await User.create(data);
       sendTokenResponse(user, HTTPCode.Created, res);
     } else {
       return next(new BadRequestError());
