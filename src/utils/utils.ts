@@ -1,7 +1,12 @@
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const UUIDRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email);
+}
+
+const isValidUUID = (uuid: string): boolean => {
+  return UUIDRegex.test(uuid);
 }
 
 enum DateUnits {
@@ -42,6 +47,7 @@ const addToDate = (amount: number, type?: DateUnits): number => {
 
 export {
   isValidEmail,
+  isValidUUID,
   addToDate,
   DateUnits
 }

@@ -1,10 +1,9 @@
-import { RequestHandler, Response, response } from "express";
-import { addToDate, DateUnits, isValidEmail } from "../../utils/utils";
-import { HTTPCode } from '../../models/HTTPCodes';
-import { UserRoles } from "../../models/Role";
-import { isValidUserData, User, UserData, UserExistsError } from '../../models/User';
-import { BadRequestError, ErrorResponse, ErrorType } from '../../utils/errorHandler';
-import { ServerResponse } from "node:http";
+import { RequestHandler, Response } from "express";
+import { addToDate, DateUnits, isValidEmail } from "../utils/utils";
+import { HTTPCode } from '../models/HTTPCodes';
+import { UserRoles } from "../models/Role";
+import { isValidUserData, User, UserData, UserExistsError } from '../models/User';
+import { BadRequestError, ErrorResponse, ErrorType } from '../utils/errorHandler';
 
 enum AuthenticationErrors {
   noUser,

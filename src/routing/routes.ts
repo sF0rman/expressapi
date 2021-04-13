@@ -22,6 +22,7 @@ const createRoutes = (): Router => {
 
   // Setup Routes
   router.use('/auth', require('./routes/auth'));
+  router.use('/user', require('./routes/user'));
 
   // 404 Invalid Routes
   router.all('*', invalidRoute);

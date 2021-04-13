@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, Response } from 'express';
 import { HTTPCode } from '../models/HTTPCodes';
 
 enum ErrorType {
@@ -6,8 +6,8 @@ enum ErrorType {
   UserExistsError = 'UserExistsError',
   AuthenticationError = 'AuthenticationError',
   PermissionError = 'PermissionError',
-  ClientError = 'ClientError',
-  BadRequestError = 'BadRequestError'
+  BadRequestError = 'BadRequestError',
+  ResourceNotFoundError = 'ResourceNotFoundError'
 }
 
 class ErrorResponse extends Error {
@@ -27,6 +27,21 @@ class BadRequestError extends ErrorResponse {
   }
 }
 
+enum Resource {
+  User = 'User'
+}
+class ResourceNotFoundError extends ErrorResponse {
+  name: ErrorType = ErrorType.ResourceNotFoundError;
+  constructor(resource: Resource, query?: string | object) {
+    super(HTTPCode.NotFound);
+    if (!query) {
+      this.message = `Resource not found: ${resource}`;
+    } else {
+      this.message = `Resource not found: ${resource} for query ${query.toString()}`;
+    }
+  }
+}
+
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   switch (err.name) {
     case ErrorType.InvalidRoute:
@@ -34,6 +49,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     case ErrorType.AuthenticationError:
     case ErrorType.PermissionError:
     case ErrorType.BadRequestError:
+    case ErrorType.ResourceNotFoundError:
       console.log(err.name.red);
       break;
     default:
@@ -51,5 +67,7 @@ export {
   ErrorType,
   errorHandler,
   ErrorResponse,
-  BadRequestError
+  BadRequestError,
+  Resource,
+  ResourceNotFoundError
 }
