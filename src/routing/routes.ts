@@ -6,17 +6,10 @@ const router = express.Router();
 class InvalidRouteError extends ErrorResponse {
   name: string = ErrorType.InvalidRoute;
   constructor() {
-    super('Route not found', HTTPCode.NotFound);
+    super(HTTPCode.NotFound);
+    this.message = 'Route not found';
   }
 }
-
-class ClientError extends ErrorResponse {
-  name: string = ErrorType.ClientError;
-  constructor(message: string) {
-    super(message, HTTPCode.BadRequest);
-  }
-}
-
 /**
  * Add API routes
  * @returns Express Router.

@@ -3,7 +3,7 @@ import { DataTypes, ModelDefined, Model } from 'sequelize';
 import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 import { HTTPCode } from './HTTPCodes';
 import { UserRoles } from './Role';
-import { genSalt, hash } from 'bcryptjs';
+import { compare, genSalt, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 interface UserData extends Model {
@@ -11,13 +11,15 @@ interface UserData extends Model {
   password?: string;
   role?: UserRoles;
   getJwt?: () => string;
+  matchPassword?: (string) => Promise<boolean>
 }
 
 
 class UserExistsError extends ErrorResponse {
   name: string = ErrorType.UserExistsError;
   constructor(message: string) {
-    super(`User with supplied email (${message}) already exists`, HTTPCode.Conflict);
+    super(HTTPCode.Conflict);
+    this.message = `User with supplied email (${message}) already exists`;
   }
 }
 
@@ -70,6 +72,10 @@ User.prototype.getJwt = function () {
   return sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   })
+}
+
+User.prototype.matchPassword = async function(password: string) {
+  return await compare(password, this.password);
 }
 
 const isValidUserData = (obj: any): obj is UserData => {

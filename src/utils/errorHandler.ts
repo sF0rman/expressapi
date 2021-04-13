@@ -12,16 +12,18 @@ enum ErrorType {
 
 class ErrorResponse extends Error {
   statusCode: number;
-  constructor(message: string, statusCode: number) {
-    super(message);
+  message: string;
+  constructor(statusCode: number) {
+    super();
     this.statusCode = statusCode;
   }
 }
 
 class BadRequestError extends ErrorResponse {
-  name: ErrorType.BadRequestError;
+  name: ErrorType = ErrorType.BadRequestError;
   constructor(type?: string) {
-    super(`Bad Request${type && ': Invalid ' + type}` , HTTPCode.BadRequest);
+    super(HTTPCode.BadRequest);
+    this.message = `Bad Request${type && ': Invalid ' + type}`;
   }
 }
 
