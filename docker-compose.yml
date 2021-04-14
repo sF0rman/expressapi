@@ -20,5 +20,25 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: rootuser
 
+  api:
+    container_name: "api"
+    image: sforman/nodeapi:master
+    depends_on:
+     - "db"
+    environment:
+      DEVELOPMENT=false
+      SERVER_PORT=1337
+      SERVER_HOST=localhost
+      DB_HOST=localhost
+      DB_PORT=5432
+      DB_USER=admin
+      DB_PASS=rootuser
+      DB_NAME=data
+      JWT_SECRET=@weS0m3
+      JWT_EXPIRE=30d
+      COOKIE_EXPIRE=30
+    networks:
+      webserver:
+
 networks:
   webserver:

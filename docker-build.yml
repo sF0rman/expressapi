@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DEVELOPMENT=false
+        SERVER_PORT=${S_PORT}
+        SERVER_HOST=${S_HOST}
+        DB_HOST=${DB_HOST}
+        DB_PORT=${DB_PORT}
+        DB_USER=${DB_USER}
+        DB_PASS=${DB_PASS}
+        DB_NAME=${DB_NAME}
+        JWT_SECRET=${SECRET}
+        JWT_EXPIRE=30d
+        COOKIE_EXPIRE=30
+      image: "sforman/nodeapi:TAG_NAME"
