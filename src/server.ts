@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import {json} from 'body-parser';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { Color } from 'colors';

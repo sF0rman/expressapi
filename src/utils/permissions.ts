@@ -1,4 +1,3 @@
-import { RequestParamHandler, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { User, UserData } from '../models/User';
 import { HTTPCode } from '../models/HTTPCodes';
