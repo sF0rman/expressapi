@@ -1,5 +1,5 @@
 import { db } from '../database/database';
-import { DataTypes, ModelDefined, Model } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 import { HTTPCode } from './HTTPCodes';
 import { UserRoles } from './Role';

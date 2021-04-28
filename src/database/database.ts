@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: './.env' });
 const type: string = process.env.DB_TYPE;
 const host: string = process.env.DB_HOST;
 const port: string = process.env.DB_PORT;
