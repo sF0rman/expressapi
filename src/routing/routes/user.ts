@@ -2,8 +2,9 @@ import express from 'express';
 const router = express.Router();
 
 import { protect } from '../../utils/permissions';
-import { getUserById, getSelf } from '../../controller/user';
+import { getUserById, getSelf, getAllUsers } from '../../controller/user';
 
+router.get('', protect, getAllUsers);
 router.get('/me', protect, getSelf);
 router.get('/:id', protect, getUserById);
 

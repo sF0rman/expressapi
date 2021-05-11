@@ -13,6 +13,4 @@ ENV DEVELOPMENT=production
 WORKDIR /app
 EXPOSE 1337
 COPY --from=0 dist ./
-COPY package*.json ./
-RUN npm install --production
 CMD ["node","server.js"]

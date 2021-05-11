@@ -46,7 +46,28 @@ const getUserById = async (req, res, next): Promise<void> => {
   }
 }
 
+/**
+ * 
+ * @description Get all Users
+ * @route GET /api/user
+ * @access all logged in
+ */
+const getAllUsers = async (req, res, next): Promise<void> => {
+  try {
+    const users = await User.findAll();
+
+    if (!users) {
+      return next(new ResourceNotFoundError(Resource.User))
+    }
+
+    res.status(HTTPCode.OK).send(okResponse(users));
+  } catch (err) {
+    next(err);
+  }
+}
+
 export {
   getSelf,
-  getUserById
+  getUserById,
+  getAllUsers
 }

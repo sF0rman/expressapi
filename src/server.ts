@@ -8,7 +8,6 @@ import { errorHandler } from './utils/errorHandler';
 
 import { createRoutes } from './routing/routes';
 import { db } from './database/database';
-import { exit } from 'node:process';
 
 // Load environment variables.
 dotenv.config({ path: './.env' });
