@@ -2,9 +2,12 @@ import { db } from '../database/database';
 import { DataTypes, Model } from 'sequelize';
 import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 import { HTTPCode } from './HTTPCodes';
-import { UserRoles } from './Role';
+import { Role, UserRoles } from './Role';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { randomBytes, createHash } from 'crypto';
+import { addToDate, DateUnits } from '../utils/utils';
+import { INITIALLY_DEFERRED } from 'sequelize/types/lib/deferrable';
 
 interface UserData extends Model {
   email: string;
@@ -46,9 +49,13 @@ const User = db.define<UserData>('User', {
     }
   },
   role: {
-    type: DataTypes.ENUM(UserRoles.admin, UserRoles.user),
+    type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: UserRoles.user
+    defaultValue: 0,
+    references: {
+      model: Role,
+      key: 'id'
+    }
   },
   resetPasswordToken: {
     type: DataTypes.STRING
@@ -76,6 +83,14 @@ User.prototype.getJwt = function () {
 
 User.prototype.matchPassword = async function(password: string) {
   return await compare(password, this.password);
+}
+
+User.prototype.getResetPasswordToken = function(): string {
+  const resetToken = randomBytes(20).toString('hex');
+  this.resetPasswordToken = createHash('sha256').update(resetToken).digest('hex');
+  this.resetPasswordExpire = new Date(Date.now() + addToDate(10, DateUnits.min));
+
+  return resetToken;
 }
 
 const isValidUserData = (obj: any): obj is UserData => {

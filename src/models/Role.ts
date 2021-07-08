@@ -2,9 +2,9 @@ import { db } from '../database/database';
 import { DataTypes, Model } from 'sequelize';
 
 enum UserRoles {
-  admin = 'ADMIN',
-  premium = 'PREMIUM',
-  user = 'USER'
+  user = 0,
+  premium = 1,
+  admin = 2
 }
 
 interface RoleData extends Model {
@@ -12,14 +12,16 @@ interface RoleData extends Model {
   role: UserRoles;
 }
 
-const Roles = db.define<RoleData>('Role', {
+const Role = db.define<RoleData>('Role', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    unique: true
   },
   role: {
-    type: DataTypes.ENUM(UserRoles.admin, UserRoles.premium, UserRoles.user),
+    primaryKey: true,
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {
@@ -27,6 +29,6 @@ const Roles = db.define<RoleData>('Role', {
 });
 
 export {
-  Roles,
+  Role,
   UserRoles
 }

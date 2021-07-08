@@ -108,7 +108,18 @@ const logout: RequestHandler = (req, res, next): void => {
  * @route POST /api/auth/reset
  * @access Public
  */
-const reset: RequestHandler = (req, res, next): void => {
+const reset: RequestHandler = async (req, res, next): Promise<void> => {
+  const email = req.body?.email;
+  if (!email) {
+    return next(new BadRequestError('email'));
+
+  }
+  const user = await User.findOne({ where: { email } });
+
+  if (!user) {
+    return next(new AuthenticationError(AuthenticationErrors.noUser));
+  }
+
   res.status(HTTPCode.OK).send(okResponse({}));
 }
 
