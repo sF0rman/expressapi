@@ -2,6 +2,7 @@ import { verify } from 'jsonwebtoken';
 import { User, UserData } from '../models/User';
 import { HTTPCode } from '../models/HTTPCodes';
 import { ErrorResponse, ErrorType } from './errorHandler';
+import { UserRoles } from '../models/Role';
 
 enum Permissions {
   notLoggedIn,
@@ -44,6 +45,16 @@ const protect = async (req, res, next): Promise<void> => {
   }
 }
 
+const authorize = (...roles: UserRoles[]) => {
+  return (req, res, next): void => {
+    if(!roles.includes(req.user.role)) {
+      return next(new PermissionError(Permissions.notAllowed));
+    }
+    next();
+  }
+}
+
 export {
-  protect
+  protect,
+  authorize
 }

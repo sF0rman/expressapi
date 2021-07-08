@@ -9,7 +9,7 @@ RUN npm run build
 
 #Copy built files
 FROM node:15.14-alpine3.10
-ENV DEVELOPMENT=production
+ENV DEVELOPMENT=false
 WORKDIR /app
 EXPOSE 1337
 COPY --from=0 dist ./

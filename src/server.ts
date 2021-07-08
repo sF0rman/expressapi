@@ -17,6 +17,7 @@ const boot = () => {
   // Start Server
   console.clear();
   console.log('Starting...'.green);
+  console.log(process.env.DEVELOPMENT ? 'Development Mode' : 'Live Production Build');
   // Start Database
   db.authenticate().then(() => {
     db.sync(); // force to reset db, alter to update tables.

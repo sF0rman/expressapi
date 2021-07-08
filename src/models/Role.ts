@@ -3,6 +3,7 @@ import { DataTypes, Model } from 'sequelize';
 
 enum UserRoles {
   admin = 'ADMIN',
+  premium = 'PREMIUM',
   user = 'USER'
 }
 
@@ -18,7 +19,7 @@ const Roles = db.define<RoleData>('Role', {
     primaryKey: true
   },
   role: {
-    type: DataTypes.ENUM(UserRoles.admin, UserRoles.user),
+    type: DataTypes.ENUM(UserRoles.admin, UserRoles.premium, UserRoles.user),
     allowNull: false
   }
 }, {

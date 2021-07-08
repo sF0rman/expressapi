@@ -102,6 +102,16 @@ const logout: RequestHandler = (req, res, next): void => {
   res.status(HTTPCode.OK).send(okResponse({}));
 }
 
+/**
+ * 
+ * @description Reset password for user
+ * @route POST /api/auth/reset
+ * @access Public
+ */
+const reset: RequestHandler = (req, res, next): void => {
+  res.status(HTTPCode.OK).send(okResponse({}));
+}
+
 const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) => {
   const token = user.getJwt();
 
@@ -124,5 +134,6 @@ const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) 
 export {
   register,
   login,
-  logout
+  logout,
+  reset
 };

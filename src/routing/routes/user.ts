@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { protect } from '../../utils/permissions';
+import { protect, authorize } from '../../utils/permissions';
 import { getUserById, getSelf, getAllUsers } from '../../controller/user';
 
 router.get('', protect, getAllUsers);
