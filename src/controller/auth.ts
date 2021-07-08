@@ -120,7 +120,8 @@ const reset: RequestHandler = async (req, res, next): Promise<void> => {
     return next(new AuthenticationError(AuthenticationErrors.noUser));
   }
 
-  res.status(HTTPCode.OK).send(okResponse({}));
+  const resetToken = user.getResetPasswordToken();
+  res.status(HTTPCode.OK).send(okResponse(user));
 }
 
 const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) => {

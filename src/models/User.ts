@@ -13,7 +13,8 @@ interface UserData extends Model {
   password?: string;
   role?: UserRoles;
   getJwt?: () => string;
-  matchPassword?: (string) => Promise<boolean>
+  matchPassword?: (string) => Promise<boolean>;
+  getResetPasswordToken?: () => string;
 }
 
 class UserExistsError extends ErrorResponse {
@@ -67,8 +68,10 @@ const User = db.define<UserData>('User', {
   },
   hooks: {
     beforeCreate: async (user: UserData, options) => {
-      const salt = await genSalt(10);
-      user.password = await hash(user.password, salt);
+      if (user.changed('password')) {
+        const salt = await genSalt(10);
+        user.password = await hash(user.password, salt);
+      }
     }
   },
 });
@@ -79,14 +82,15 @@ User.prototype.getJwt = function () {
   })
 }
 
-User.prototype.matchPassword = async function(password: string) {
+User.prototype.matchPassword = async function (password: string) {
   return await compare(password, this.password);
 }
 
-User.prototype.getResetPasswordToken = function(): string {
+User.prototype.getResetPasswordToken = function (): string {
   const resetToken = randomBytes(20).toString('hex');
   this.resetPasswordToken = createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = new Date(Date.now() + addToDate(10, DateUnits.min));
+  this.save({ validateBeforeSave: false });
 
   return resetToken;
 }
