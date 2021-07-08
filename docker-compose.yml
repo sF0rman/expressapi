@@ -13,8 +13,6 @@ services:
       - "${DB_PORT}:5432"
     networks:
       webserver:
-    volumes:
-      - ./developmentData:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
