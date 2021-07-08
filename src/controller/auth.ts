@@ -27,7 +27,7 @@ class AuthenticationError extends ErrorResponse {
  * @description Create a new user
  * @route POST /api/auth/register 
  * @access Public  
- **/
+ */
 const register: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     if (req.body && isValidUserData(req.body)) {
@@ -59,7 +59,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
  * @description Login
  * @route POST /api/auth/login 
  * @access Public  
- **/
+ */
 const login: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     const { email, password }: UserData = req.body;
@@ -92,7 +92,7 @@ const login: RequestHandler = async (req, res, next): Promise<void> => {
  * @description Logout / Clear Auth cookie
  * @route POST /api/auth/logout 
  * @access Public  
- **/
+ */
 const logout: RequestHandler = (req, res, next): void => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + addToDate(10, DateUnits.sec)),
