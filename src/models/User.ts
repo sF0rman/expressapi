@@ -1,13 +1,12 @@
-import { db } from '../database/database';
+import { compare, genSalt, hash } from 'bcryptjs';
+import { createHash, randomBytes } from 'crypto';
+import { sign } from 'jsonwebtoken';
 import { DataTypes, Model } from 'sequelize';
+import { db } from '../database/database';
 import { ErrorResponse, ErrorType } from '../utils/errorHandler';
+import { addToDate, DateUnits } from '../utils/utils';
 import { HTTPCode } from './HTTPCodes';
 import { Role, UserRoles } from './Role';
-import { compare, genSalt, hash } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
-import { randomBytes, createHash } from 'crypto';
-import { addToDate, DateUnits } from '../utils/utils';
-import { INITIALLY_DEFERRED } from 'sequelize/types/lib/deferrable';
 
 interface UserData extends Model {
   email: string;
@@ -16,7 +15,6 @@ interface UserData extends Model {
   getJwt?: () => string;
   matchPassword?: (string) => Promise<boolean>
 }
-
 
 class UserExistsError extends ErrorResponse {
   name: string = ErrorType.UserExistsError;
@@ -102,4 +100,4 @@ export {
   User,
   UserExistsError,
   isValidUserData
-}
+};

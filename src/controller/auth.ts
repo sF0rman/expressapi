@@ -1,9 +1,9 @@
 import { RequestHandler, Response } from "express";
-import { addToDate, DateUnits, isValidEmail, okResponse } from "../utils/utils";
 import { HTTPCode } from '../models/HTTPCodes';
 import { UserRoles } from "../models/Role";
 import { isValidUserData, User, UserData, UserExistsError } from '../models/User';
 import { BadRequestError, ErrorResponse, ErrorType } from '../utils/errorHandler';
+import { addToDate, DateUnits, isValidEmail, okResponse } from "../utils/utils";
 
 enum AuthenticationErrors {
   noUser,

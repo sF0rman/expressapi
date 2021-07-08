@@ -1,14 +1,13 @@
-import express, { Router } from 'express';
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
 import { Color } from 'colors';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import express, { Router } from 'express';
+import { db } from './database/database';
+import { createRoutes } from './routing/routes';
+import { errorHandler } from './utils/errorHandler';
 const colors: Color = require('colors');
 
-import { errorHandler } from './utils/errorHandler';
 
-import { createRoutes } from './routing/routes';
-import { db } from './database/database';
-import { Role, UserRoles } from './models/Role';
 
 // Load environment variables.
 dotenv.config({ path: './.env' });
@@ -21,9 +20,8 @@ const boot = () => {
   console.log(process.env.DEVELOPMENT ? 'Development Mode' : 'Live Production Build');
   // Start Database
   db.authenticate().then(async () => {
-    await db.sync(process.env.DEVELOPMENT ? { force: true } : {}); // force to reset db, alter to update tables.
+    await db.sync(process.env.DEVELOPMENT ? { alter: true } : {}); // force to reset db, alter to update tables.
 
-    await createData();
     // Start server
     const app = express();
     const router: Router = createRoutes();
@@ -52,18 +50,3 @@ const boot = () => {
 }
 
 boot();
-
-const createData = async () => {
-  console.log('Adding Data..'.green);
-  await Role.bulkCreate([{
-    id: UserRoles.user,
-    role: 'user'
-  }, {
-    id: UserRoles.premium,
-    role: 'premium'
-  }, {
-    id: UserRoles.admin,
-    role: 'admin'
-  }]);
-  console.log('Data Added'.green);
-}

@@ -1,8 +1,8 @@
 import express from 'express';
+import { login, logout, register, reset } from '../../controller/auth';
+import { protect } from '../../utils/permissions';
 const router = express.Router();
 
-import { register, login, logout, reset } from '../../controller/auth';
-import { protect } from '../../utils/permissions';
 
 router.post('/register', register);
 router.post('/login', login);
