@@ -8,6 +8,7 @@ export enum HTTPCode {
   Forbidden = 403,
   NotFound = 404,
   Conflict = 409,
+  Gone = 410,
   ServerError = 500,
   NotImplemented = 501
 }

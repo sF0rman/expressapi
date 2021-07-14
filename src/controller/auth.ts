@@ -1,9 +1,12 @@
 import { RequestHandler, Response } from "express";
+import { Op } from "sequelize/types";
 import { HTTPCode } from '../models/HTTPCodes';
 import { UserRoles } from "../models/Role";
 import { isValidUserData, User, UserData, UserExistsError } from '../models/User';
-import { BadRequestError, ErrorResponse, ErrorType } from '../utils/errorHandler';
+import { BadRequestError, ErrorResponse, ErrorType, ExpiredError } from '../utils/errorHandler';
 import { addToDate, DateUnits, isValidEmail, okResponse } from "../utils/utils";
+import { emailOptions, sendEmail, EmailError } from '../utils/email';
+import { createHash } from "crypto";
 
 enum AuthenticationErrors {
   noUser,
@@ -104,7 +107,7 @@ const logout: RequestHandler = (req, res, next): void => {
 
 /**
  * 
- * @description Reset password for user
+ * @description Create reset token and send email link.
  * @route POST /api/auth/reset
  * @access Public
  */
@@ -121,9 +124,53 @@ const reset: RequestHandler = async (req, res, next): Promise<void> => {
   }
 
   const resetToken = user.getResetPasswordToken();
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/resetPassword/${resetToken}`;
+  const message = `You are receiving this email because you or someone else has requested the reset of a password.\n\nIf this wasn\'t you, you can ignore this email. Please follow this link to reset your password: ${resetUrl}`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Password reset',
+      text: message
+    } as emailOptions);
+    res.status(HTTPCode.OK).send(okResponse({ message: 'Email Sent' }));
+  } catch (err) {
+    console.log(err);
+    user.clearResetPasswordToken();
+    return next(new EmailError());
+  }
+}
+
+/**
+ * 
+ * @description Get user from reset token
+ * @route GET /api/auth/resetPassword
+ * @access Public
+ */
+const resetPassword = async (req, res, next): Promise<void> => {
+  const resetPasswordToken = createHash('sha256').update(req.params.resettoken).digest('hex');
+
+  const user = await User.findOne({
+    where: {
+      resetPasswordToken,
+      resetPasswordExpire: { [Op.gt]: Date.now() }
+    }
+  });
+
+  if (!user) { 
+    return next(new ExpiredError);
+  }
+
   res.status(HTTPCode.OK).send(okResponse(user));
 }
 
+/**
+ * 
+ * @param user UserData
+ * @param statusCode HTTPCode
+ * @param res Response
+ * @description Sends a response with user TOKEN.
+ */
 const sendTokenResponse = (user: UserData, statusCode: HTTPCode, res: Response) => {
   const token = user.getJwt();
 
@@ -147,5 +194,6 @@ export {
   register,
   login,
   logout,
-  reset
+  reset,
+  resetPassword
 };

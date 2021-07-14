@@ -15,6 +15,7 @@ interface UserData extends Model {
   getJwt?: () => string;
   matchPassword?: (string) => Promise<boolean>;
   getResetPasswordToken?: () => string;
+  clearResetPasswordToken?: () => void;
 }
 
 class UserExistsError extends ErrorResponse {
@@ -93,6 +94,12 @@ User.prototype.getResetPasswordToken = function (): string {
   this.save({ validateBeforeSave: false });
 
   return resetToken;
+}
+
+User.prototype.clearResetPasswordToken = function (): void {
+  this.resetPasswordToken = undefined;
+  this.resetPasswordExpire = undefined;
+  this.save({ validateBeforeSave: false });
 }
 
 const isValidUserData = (obj: any): obj is UserData => {

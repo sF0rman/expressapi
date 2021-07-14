@@ -7,7 +7,9 @@ enum ErrorType {
   AuthenticationError = 'AuthenticationError',
   PermissionError = 'PermissionError',
   BadRequestError = 'BadRequestError',
-  ResourceNotFoundError = 'ResourceNotFoundError'
+  ResourceNotFoundError = 'ResourceNotFoundError',
+  EmailError = 'EmailError',
+  ExpiredError = 'ExpiredError'
 }
 
 class ErrorResponse extends Error {
@@ -27,9 +29,18 @@ class BadRequestError extends ErrorResponse {
   }
 }
 
+class ExpiredError extends ErrorResponse {
+  name: ErrorType = ErrorType.ExpiredError;
+  constructor(){
+    super(HTTPCode.Gone);
+    this.message = 'Link has expired';
+  }
+}
+
 enum Resource {
   User = 'User'
 }
+
 class ResourceNotFoundError extends ErrorResponse {
   name: ErrorType = ErrorType.ResourceNotFoundError;
   constructor(resource: Resource, query?: string | object) {
@@ -50,6 +61,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     case ErrorType.PermissionError:
     case ErrorType.BadRequestError:
     case ErrorType.ResourceNotFoundError:
+    case ErrorType.EmailError:
       console.log(err.name.red);
       break;
     default:
@@ -68,6 +80,7 @@ export {
   errorHandler,
   ErrorResponse,
   BadRequestError,
+  ExpiredError,
   Resource,
   ResourceNotFoundError
 }
