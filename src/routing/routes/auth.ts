@@ -3,7 +3,6 @@ import { login, logout, register, reset, resetPassword } from '../../controller/
 import { protect } from '../../utils/permissions';
 const router = express.Router();
 
-
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', protect, logout);

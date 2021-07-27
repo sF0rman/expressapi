@@ -6,7 +6,7 @@ import { db } from '../database/database';
 import { ErrorResponse, ErrorType } from '../utils/errorHandler';
 import { addToDate, DateUnits } from '../utils/utils';
 import { HTTPCode } from './HTTPCodes';
-import { Role, UserRoles } from './Role';
+import { Roles, UserRoles } from './Role';
 
 interface UserData extends Model {
   email: string;
@@ -26,7 +26,7 @@ class UserExistsError extends ErrorResponse {
   }
 }
 
-const User = db.define<UserData>('User', {
+const Users = db.define<UserData>('Users', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -53,7 +53,7 @@ const User = db.define<UserData>('User', {
     allowNull: false,
     defaultValue: 0,
     references: {
-      model: Role,
+      model: Roles,
       key: 'id'
     }
   },
@@ -77,17 +77,17 @@ const User = db.define<UserData>('User', {
   },
 });
 
-User.prototype.getJwt = function () {
+Users.prototype.getJwt = function () {
   return sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   })
 }
 
-User.prototype.matchPassword = async function (password: string) {
+Users.prototype.matchPassword = async function (password: string) {
   return await compare(password, this.password);
 }
 
-User.prototype.getResetPasswordToken = function (): string {
+Users.prototype.getResetPasswordToken = function (): string {
   const resetToken = randomBytes(20).toString('hex');
   this.resetPasswordToken = createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = new Date(Date.now() + addToDate(10, DateUnits.min));
@@ -96,7 +96,7 @@ User.prototype.getResetPasswordToken = function (): string {
   return resetToken;
 }
 
-User.prototype.clearResetPasswordToken = function (): void {
+Users.prototype.clearResetPasswordToken = function (): void {
   this.resetPasswordToken = undefined;
   this.resetPasswordExpire = undefined;
   this.save({ validateBeforeSave: false });
@@ -108,7 +108,7 @@ const isValidUserData = (obj: any): obj is UserData => {
 
 export {
   UserData,
-  User,
+  Users,
   UserExistsError,
   isValidUserData
 };

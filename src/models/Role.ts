@@ -12,7 +12,7 @@ interface RoleData extends Model {
   role: UserRoles;
 }
 
-const Role = db.define<RoleData>('Role', {
+const Roles = db.define<RoleData>('Roles', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -27,10 +27,10 @@ const Role = db.define<RoleData>('Role', {
   timestamps: false
 });
 
-Role.sync().then(async () => {
-  const roles = await Role.findAll();
+Roles.sync().then(async () => {
+  const roles = await Roles.findAll();
   if (!roles) {
-    await Role.bulkCreate([{
+    await Roles.bulkCreate([{
       id: UserRoles.user,
       role: 'user'
     }, {
@@ -46,6 +46,6 @@ Role.sync().then(async () => {
 })
 
 export {
-  Role,
+  Roles,
   UserRoles
 };

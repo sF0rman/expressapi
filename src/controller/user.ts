@@ -1,5 +1,5 @@
 import { BadRequestError, Resource, ResourceNotFoundError } from "../utils/errorHandler";
-import { User } from '../models/User';
+import { Users } from '../models/User';
 import { HTTPCode } from "../models/HTTPCodes";
 import { isValidUUID, okResponse } from "../utils/utils";
 
@@ -13,7 +13,7 @@ const getSelf = async (req, res, next): Promise<void> => {
     // Protected route, should always have userid.
     const id = req.user.id;
 
-    const user = await User.findByPk(id);
+    const user = await Users.findByPk(id);
     if (!user) {
       return next(new ResourceNotFoundError(Resource.User))
     }
@@ -35,7 +35,7 @@ const getUserById = async (req, res, next): Promise<void> => {
     if (!id) { return next(new BadRequestError()) }
     if (!isValidUUID(id)) { return next(new BadRequestError('UUID')) }
 
-    const user = await User.findByPk(id);
+    const user = await Users.findByPk(id);
     if (!user) {
       return next(new ResourceNotFoundError(Resource.User))
     }
@@ -54,7 +54,7 @@ const getUserById = async (req, res, next): Promise<void> => {
  */
 const getAllUsers = async (req, res, next): Promise<void> => {
   try {
-    const users = await User.findAll();
+    const users = await Users.findAll();
 
     if (!users) {
       return next(new ResourceNotFoundError(Resource.User))

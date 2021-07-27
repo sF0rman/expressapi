@@ -20,7 +20,7 @@ const boot = () => {
   console.log(process.env.DEVELOPMENT ? 'Development Mode' : 'Live Production Build');
   // Start Database
   db.authenticate().then(async () => {
-    await db.sync(process.env.DEVELOPMENT ? { force: true } : { alter: true }); // force to reset db, alter to update tables.
+    await db.sync(process.env.DEVELOPMENT ? { force: true } : { force: true }); // force to reset db, alter to update tables.
 
     // Start server
     const app = express();
