@@ -1,5 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import { Users, UserData } from '../models/User';
+import { User, UserData } from '../models/User';
 import { HTTPCode } from '../models/HTTPCodes';
 import { ErrorResponse, ErrorType } from './errorHandler';
 import { UserRoles } from '../models/Role';
@@ -37,7 +37,7 @@ const protect = async (req, res, next): Promise<void> => {
 
   try {
     const data: any = verify(token, process.env.JWT_SECRET);
-    req.user = await Users.findByPk(data.id);
+    req.user = await User.findByPk(data.id);
 
     next();
   } catch (err) {

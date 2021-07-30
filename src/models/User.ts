@@ -26,7 +26,7 @@ class UserExistsError extends ErrorResponse {
   }
 }
 
-const Users = db.define<UserData>('Users', {
+const User = db.define<UserData>('User', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -77,17 +77,17 @@ const Users = db.define<UserData>('Users', {
   },
 });
 
-Users.prototype.getJwt = function () {
+User.prototype.getJwt = function () {
   return sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   })
 }
 
-Users.prototype.matchPassword = async function (password: string) {
+User.prototype.matchPassword = async function (password: string) {
   return await compare(password, this.password);
 }
 
-Users.prototype.getResetPasswordToken = function (): string {
+User.prototype.getResetPasswordToken = function (): string {
   const resetToken = randomBytes(20).toString('hex');
   this.resetPasswordToken = createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = new Date(Date.now() + addToDate(10, DateUnits.min));
@@ -96,7 +96,7 @@ Users.prototype.getResetPasswordToken = function (): string {
   return resetToken;
 }
 
-Users.prototype.clearResetPasswordToken = function (): void {
+User.prototype.clearResetPasswordToken = function (): void {
   this.resetPasswordToken = undefined;
   this.resetPasswordExpire = undefined;
   this.save({ validateBeforeSave: false });
@@ -108,7 +108,7 @@ const isValidUserData = (obj: any): obj is UserData => {
 
 export {
   UserData,
-  Users,
+  User,
   UserExistsError,
   isValidUserData
 };

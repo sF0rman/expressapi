@@ -2,7 +2,7 @@ import { RequestHandler, Response } from "express";
 import {Op} from 'sequelize'
 import { HTTPCode } from '../models/HTTPCodes';
 import { UserRoles } from "../models/Role";
-import { isValidUserData, Users, UserData, UserExistsError } from '../models/User';
+import { isValidUserData, User, UserData, UserExistsError } from '../models/User';
 import { BadRequestError, ErrorResponse, ErrorType, ExpiredError } from '../utils/errorHandler';
 import { addToDate, DateUnits, isValidEmail, okResponse } from "../utils/utils";
 import { emailOptions, sendEmail, EmailError } from '../utils/email';
@@ -37,7 +37,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
       if (!isValidEmail(req.body.email)) {
         return next(new BadRequestError('email'));
       }
-      const found: any = await Users.findOne({ where: { email: req.body.email } });
+      const found: any = await User.findOne({ where: { email: req.body.email } });
       if (found) {
         return next(new UserExistsError(req.body.email.toString()));
       }
@@ -47,7 +47,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
         role: UserRoles.user
       } as UserData;
 
-      const user: UserData = await Users.create(data);
+      const user: UserData = await User.create(data);
       sendTokenResponse(user, HTTPCode.Created, res);
     } else {
       return next(new BadRequestError());
@@ -70,7 +70,7 @@ const login: RequestHandler = async (req, res, next): Promise<void> => {
     if (!isValidEmail(email)) { return next(new BadRequestError('email')); }
     if (!password) { return next(new BadRequestError('password')); }
 
-    const user = await Users.findOne({
+    const user = await User.findOne({
       where: { email },
       attributes: { include: ['password'] }
     });
@@ -117,7 +117,7 @@ const reset: RequestHandler = async (req, res, next): Promise<void> => {
     return next(new BadRequestError('email'));
 
   }
-  const user = await Users.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email } });
 
   if (!user) {
     return next(new AuthenticationError(AuthenticationErrors.noUser));
@@ -150,7 +150,7 @@ const reset: RequestHandler = async (req, res, next): Promise<void> => {
 const resetPassword = async (req, res, next): Promise<void> => {
   const resetPasswordToken = createHash('sha256').update(req.params.resettoken).digest('hex');
 
-  const user = await Users.findOne({
+  const user = await User.findOne({
     where: {
       resetPasswordToken,
       resetPasswordExpire: { [Op.gt]: Date.now() }

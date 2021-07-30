@@ -5,6 +5,7 @@ import express, { Router } from 'express';
 import { db } from './database/database';
 import { createRoutes } from './routing/routes';
 import { errorHandler } from './utils/errorHandler';
+const cors = require('cors');
 const colors: Color = require('colors');
 
 
@@ -20,16 +21,16 @@ const boot = () => {
   console.log(process.env.DEVELOPMENT ? 'Development Mode' : 'Live Production Build');
   // Start Database
   db.authenticate().then(async () => {
-    await db.sync(process.env.DEVELOPMENT ? { force: true } : { force: true }); // force to reset db, alter to update tables.
+    await db.sync(process.env.DEVELOPMENT ? { force: true } : { alter: true }); // force to reset db, alter to update tables.
 
     // Start server
     const app = express();
     const router: Router = createRoutes();
     app.use(express.json());
     app.use(cookieParser());
+    app.use(cors());
     app.use('/api', router);
     app.use(errorHandler);
-
     const HOST: string = process.env.SERVER_HOST || 'localhost';
     const PORT: string = process.env.SERVER_PORT || '1337';
 
@@ -41,7 +42,7 @@ const boot = () => {
   }).catch(err => {
     console.error('Unable to connect to the database:', err);
     if (retryCount < 5) {
-      setTimeout(boot, 3000);
+      setTimeout(boot, 5000);
       retryCount++;
     } else {
       process.exit(1);

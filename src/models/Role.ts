@@ -29,7 +29,8 @@ const Roles = db.define<RoleData>('Roles', {
 
 Roles.sync().then(async () => {
   const roles = await Roles.findAll();
-  if (!roles) {
+  if (!roles || !roles.length) {
+    console.log('Creating Roles...');
     await Roles.bulkCreate([{
       id: UserRoles.user,
       role: 'user'
@@ -40,6 +41,7 @@ Roles.sync().then(async () => {
       id: UserRoles.admin,
       role: 'admin'
     }]);
+    console.log('Created Roles!');
   }
 }).catch((err) => {
   console.log('Unable to create Roles', err);
