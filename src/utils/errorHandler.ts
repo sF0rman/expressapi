@@ -40,7 +40,8 @@ class ExpiredError extends ErrorResponse {
 enum Resource {
   User = 'User',
   Product = 'Product',
-  News = 'News'
+  News = 'News',
+  Img = 'Image'
 }
 
 class ResourceNotFoundError extends ErrorResponse {
