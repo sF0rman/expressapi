@@ -25,6 +25,7 @@ const createRoutes = (): Router => {
   router.use('/user', require('./routes/user'));
   router.use('/product', require('./routes/product'));
   router.use('/news', require('./routes/news'));
+  router.use('/media', require('./routes/media'));
 
   // 404 Invalid Routes
   router.all('*', invalidRoute);
