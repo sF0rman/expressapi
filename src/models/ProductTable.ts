@@ -46,14 +46,6 @@ const ProductTable = db.define<ProductTableDataModel>('productTable', {
     allowNull: false,
     primaryKey: true
   },
-  product_url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: Product,
-      key: 'url'
-    },
-  },
   no_title: {
     type: DataTypes.STRING,
     allowNull: true
@@ -85,15 +77,22 @@ const ProductTable = db.define<ProductTableDataModel>('productTable', {
   en_footnote: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  isExample: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 });
 
 Product.hasMany(ProductTable, {
   foreignKey: 'product_url'
 });
-ProductTable.belongsTo(Product);
+ProductTable.belongsTo(Product, {
+  foreignKey: 'url'
+});
 
-ProductTable.sync().then(async () => {
+ProductTable.sync({force: true}).then(async () => {
   const tables = await ProductTable.findAll();
   if (!tables || !tables.length) {
     console.log('Creating initial Tables...');

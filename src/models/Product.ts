@@ -98,7 +98,7 @@ const Product = db.define<ProductData>('product', {
   }
 });
 
-Product.sync().then(async () => {
+Product.sync({force: true}).then(async () => {
   const products = await Product.findAll();
   if (!products || !products.length) {
     console.log('Creating initial Products...');
