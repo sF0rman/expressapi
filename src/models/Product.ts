@@ -101,12 +101,12 @@ const Product = db.define<ProductData>('product', {
 Product.sync({force: true}).then(async () => {
   const products = await Product.findAll();
   if (!products || !products.length) {
-    console.log('Creating initial Products...');
+    console.log('Products: Populating data...');
     await Product.bulkCreate(productData);
-    console.log('Created Products!');
+    console.log('Products: Data added!');
   }
 }).catch(err => {
-  console.log('Unable to create products', err);
+  console.log('Products: Unable to add data', err);
 });
 
 export {

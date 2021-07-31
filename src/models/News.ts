@@ -68,9 +68,9 @@ const News = db.define<NewsDataModel>('news', {
 News.sync({force: true}).then(async () => {
   const news = await News.findAll();
   if(!news || !news.length) {
-    console.log('Creating initial news');
+    console.log('News: Populating data');
     await News.bulkCreate(data);
-    console.log('Created News articles');
+    console.log('News: Data added!');
   }
 });
 

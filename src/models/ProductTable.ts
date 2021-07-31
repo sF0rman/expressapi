@@ -89,18 +89,18 @@ Product.hasMany(ProductTable, {
   foreignKey: 'product_url'
 });
 ProductTable.belongsTo(Product, {
-  foreignKey: 'url'
+  foreignKey: 'product_url'
 });
 
 ProductTable.sync({force: true}).then(async () => {
   const tables = await ProductTable.findAll();
   if (!tables || !tables.length) {
-    console.log('Creating initial Tables...');
+    console.log('ProductTable: Populating data...');
     await ProductTable.bulkCreate(tableData);
-    console.log('Created Tables!');
+    console.log('ProductTable: Data Added');
   }
 }).catch(err => {
-  console.log('Unable to create product tables', err);
+  console.log('ProductTable: Unable to add data!', err);
 });
 
 export {
