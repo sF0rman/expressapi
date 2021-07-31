@@ -5,6 +5,7 @@ import { Resource } from "../utils/errorHandler";
 import { ResourceNotFoundError } from "../utils/errorHandler";
 import { okResponse } from "../utils/utils";
 import { Product, ProductData } from '../models/Product';
+import { ProductTable } from "../models/ProductTable";
 
 const getAllProducts: RequestHandler = async (req, res, next): Promise<void> => {
   try {
@@ -23,7 +24,7 @@ const getProductById: RequestHandler = async (req, res, next): Promise<void> => 
     const id = req.params.id;
     if (!id) { return next(new BadRequestError()) }
 
-    const product: ProductData = await Product.findByPk(id);
+    const product: ProductData = await Product.findByPk(id, { include: ProductTable });
     if (!product) {
       return next(new ResourceNotFoundError(Resource.Product));
     }

@@ -8,7 +8,7 @@ import { errorHandler } from './utils/errorHandler';
 const cors = require('cors');
 const colors: Color = require('colors');
 
-
+import { ProductTable } from './models/ProductTable';
 
 // Load environment variables.
 dotenv.config({ path: './.env' });

@@ -1,7 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import { db } from '../database/database';
+import { ProductTable } from "./ProductTable";
 
-const data = [
+const productData = [
   {
     "url": "ploganker",
     "no_title": "Aqualink Ploganker Serie",
@@ -69,7 +70,7 @@ interface ProductData extends Model {
   product_image: string;
 }
 
-const Product = db.define<ProductData>('Product', {
+const Product = db.define<ProductData>('product', {
   url: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -101,12 +102,12 @@ Product.sync().then(async () => {
   const products = await Product.findAll();
   if (!products || !products.length) {
     console.log('Creating initial Products...');
-    await Product.bulkCreate(data);
+    await Product.bulkCreate(productData);
     console.log('Created Products!');
   }
 }).catch(err => {
   console.log('Unable to create products', err);
-})
+});
 
 export {
   Product,

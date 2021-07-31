@@ -29,7 +29,7 @@ interface NewsDataModel extends NewsData, Model {
   id: string;
 }
 
-const News = db.define<NewsDataModel>('News', {
+const News = db.define<NewsDataModel>('news', {
   url: {
     type: DataTypes.STRING,
     allowNull: false,

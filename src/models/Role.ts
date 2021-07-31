@@ -12,7 +12,7 @@ interface RoleData extends Model {
   role: UserRoles;
 }
 
-const Roles = db.define<RoleData>('Roles', {
+const Roles = db.define<RoleData>('roles', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

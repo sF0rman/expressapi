@@ -8,7 +8,7 @@ import { addToDate, DateUnits } from '../utils/utils';
 import { HTTPCode } from './HTTPCodes';
 import { Roles, UserRoles } from './Role';
 
-interface UserData extends Model {
+interface UserData {
   email: string;
   password?: string;
   role?: UserRoles;
@@ -16,6 +16,9 @@ interface UserData extends Model {
   matchPassword?: (string) => Promise<boolean>;
   getResetPasswordToken?: () => string;
   clearResetPasswordToken?: () => void;
+}
+interface UserDataModel extends UserData, Model {
+  id: string;
 }
 
 class UserExistsError extends ErrorResponse {
@@ -26,7 +29,7 @@ class UserExistsError extends ErrorResponse {
   }
 }
 
-const User = db.define<UserData>('User', {
+const User = db.define<UserDataModel>('user', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -68,7 +71,7 @@ const User = db.define<UserData>('User', {
     attributes: { exclude: ['password', 'resetPasswordToken', 'resetPasswordExpire'] }
   },
   hooks: {
-    beforeCreate: async (user: UserData, options) => {
+    beforeCreate: async (user: UserDataModel, options) => {
       if (user.changed('password')) {
         const salt = await genSalt(10);
         user.password = await hash(user.password, salt);

@@ -39,4 +39,4 @@ const invalidRoute = (req, res, next) => {
 
 export {
   createRoutes
-}
+};
