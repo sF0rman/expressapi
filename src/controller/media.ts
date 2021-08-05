@@ -1,7 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import { HTTPCode } from "../models/HTTPCodes";
 import { BadRequestError, Resource, ResourceNotFoundError } from "../utils/errorHandler";
-import path from 'path';
-import fs from 'fs';
 
 const getImage = async (req, res, next): Promise<void> => {
   try {
@@ -9,15 +9,13 @@ const getImage = async (req, res, next): Promise<void> => {
     if (!id) { return next(new BadRequestError) }
 
     const localPath = path.join(__dirname, `../media/img/${id}`);
-    const image = fs.existsSync(localPath);
+    const img = fs.existsSync(localPath);
 
-    if (!image) {
+    if (!img) {
       return next(new ResourceNotFoundError(Resource.Img))
     }
-
-    console.log(image);
-
     res.status(HTTPCode.OK).sendFile(localPath);
+
   } catch (err) {
     next(err);
   }
@@ -25,4 +23,4 @@ const getImage = async (req, res, next): Promise<void> => {
 
 export {
   getImage
-}
+};

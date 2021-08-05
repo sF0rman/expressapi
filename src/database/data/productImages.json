@@ -1,0 +1,33 @@
+[
+  {
+    "product_url": "ploganker",
+    "image_url": "ploganker_001.png"
+  },
+  {
+    "product_url" : "taukauser-med-parelokke",
+    "image_url": "trossekauser_001.jpeg"
+  },
+  {
+    "product_url" : "taukauser-med-parelokke",
+    "image_url": "trossekauser_002.png"
+  },
+  {
+    "product_url" : "taukauser-med-parelokke",
+    "image_url": "trossekauser_003.png"
+  },
+  {
+    "product_url" : "taukauser-med-parelokke",
+    "image_url": "trossekauser_004.png"
+  },
+  {
+    "product_url" : "taukauser-med-parelokke",
+    "image_url": "trossekauser_001.jpeg"
+  }, {
+    "product_url": "fortoyningssjakler",
+    "image_url": "sjakkel_001.png"
+  },
+  {
+    "product_url": "fortoyningssjakler",
+    "image_url": "sjakkel_002.png"
+  }
+]

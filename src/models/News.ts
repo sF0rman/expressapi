@@ -1,18 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { db } from '../database/database';
 
-const data: NewsData[] = [
-  {
-    no_title: 'Nettsiden er oppe å går',
-    no_intro: 'Vi har endelig fått nettsiden utviklet.',
-    no_text: '<p>På kort varsel, har vi fått første versjon av nettsiden opp med produkt info og annet kult</p>',
-    en_title: 'Website up and running',
-    en_intro: 'Website is finally running',
-    en_text: '<p>On short notice the first version of our website is up and running</p>',
-    url: 'website-created',
-    image_url: null
-  }
-]
+const data: NewsData[] = require('../database/data/news.json');
 
 interface NewsData {
   no_title: string;
@@ -65,9 +54,9 @@ const News = db.define<NewsDataModel>('news', {
   }
 });
 
-News.sync({force: true}).then(async () => {
+News.sync().then(async () => {
   const news = await News.findAll();
-  if(!news || !news.length) {
+  if (!news || !news.length) {
     console.log('News: Populating data');
     await News.bulkCreate(data);
     console.log('News: Data added!');

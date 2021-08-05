@@ -23,7 +23,7 @@ const createRoutes = (): Router => {
   // Setup Routes
   router.use('/auth', require('./routes/auth'));
   router.use('/user', require('./routes/user'));
-  router.use('/product', require('./routes/product'));
+  router.use('/products', require('./routes/product'));
   router.use('/news', require('./routes/news'));
   router.use('/media', require('./routes/media'));
 
