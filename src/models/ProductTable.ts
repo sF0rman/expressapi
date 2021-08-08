@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import { db } from '../database/database';
-import { Product } from "./Product";
 
 interface ProductTableData {
   product_url: string;
+  header_img?: string;
   isExample?: boolean;
   no_title?: string;
   no_headers: string[];
@@ -25,6 +25,10 @@ const ProductTable = db.define<ProductTableDataModel>('productTable', {
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true
+  },
+  header_img: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true
   },
   no_title: {
     type: DataTypes.STRING,
@@ -68,4 +72,4 @@ const ProductTable = db.define<ProductTableDataModel>('productTable', {
 export {
   ProductTable,
   ProductTableData
-}
+};

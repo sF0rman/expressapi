@@ -1,7 +1,9 @@
 import { Color } from 'colors';
+import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express, { Router } from 'express';
+import { Server } from 'node:http';
 import { db } from './database/database';
 import { createRoutes } from './routing/routes';
 import { errorHandler } from './utils/errorHandler';
@@ -32,10 +34,8 @@ const boot = () => {
     const HOST: string = process.env.SERVER_HOST || 'localhost';
     const PORT: string = process.env.SERVER_PORT || '1337';
 
-    app.listen(PORT, (): void => {
-      console.log(`Server Started at http://${HOST}:${PORT}`.green);
-      console.log('----------------------------------------------');
-      retryCount = 0;
+    const listenServer = app.listen(0, function () {
+      console.log('Listening on port ', listenServer.address())
     });
   }).catch(err => {
     console.error('Unable to connect to the database:', err);

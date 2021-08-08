@@ -4,30 +4,83 @@
     "image_url": "ploganker_001.png"
   },
   {
-    "product_url" : "taukauser-med-parelokke",
-    "image_url": "trossekauser_001.jpeg"
+    "product_url": "notlodd-vektlokke",
+    "image_url": "notodd_001.png"
   },
   {
-    "product_url" : "taukauser-med-parelokke",
-    "image_url": "trossekauser_002.png"
+    "product_url": "notlodd-vektlokke",
+    "image_url": "notodd_002.png"
   },
   {
-    "product_url" : "taukauser-med-parelokke",
+    "product_url": "taukauser-med-parelokke",
+    "image_url": "taukauser_001.png"
+  },
+  {
+    "product_url": "taukauser-med-parelokke",
+    "image_url": "taukauser_002.png"
+  },
+  {
+    "product_url": "taukauser-med-parelokke",
+    "image_url": "taukauser_003.png"
+  },
+  {
+    "product_url": "trossekauser-polyuretan",
+    "image_url": "trossekauser_001.png"
+  },
+  {
+    "product_url": "trossekauser-polyuretan",
+    "image_url": "trossekauser_002.jpg"
+  },
+  {
+    "product_url": "trossekauser-polyuretan",
     "image_url": "trossekauser_003.png"
   },
   {
-    "product_url" : "taukauser-med-parelokke",
+    "product_url": "trossekauser-polyuretan",
     "image_url": "trossekauser_004.png"
   },
   {
-    "product_url" : "taukauser-med-parelokke",
-    "image_url": "trossekauser_001.jpeg"
-  }, {
+    "product_url": "trossekauser-polyuretan",
+    "image_url": "trossekauser_005.png"
+  },
+  {
+    "product_url": "trossekauser-polyuretan",
+    "image_url": "trossekauser_006.png"
+  },
+  {
+    "product_url": "trossekauser-polyuretan",
+    "image_url": "trossekauser_007.png"
+  },
+  {
+    "product_url": "parelokke",
+    "image_url": "parelokke_001.png"
+  },
+  {
+    "product_url": "parelokke",
+    "image_url": "parelokke_002.png"
+  },
+  {
+    "product_url": "parelokke",
+    "image_url": "parelokke_003.jpg"
+  },
+  {
+    "product_url": "parelokke",
+    "image_url": "parelokke_004.jpg"
+  },
+  {
     "product_url": "fortoyningssjakler",
     "image_url": "sjakkel_001.png"
   },
   {
     "product_url": "fortoyningssjakler",
     "image_url": "sjakkel_002.png"
+  },
+  {
+    "product_url": "fortoyningssjakler",
+    "image_url": "sjakkel_003.png"
+  },
+  {
+    "product_url": "fiberstropper",
+    "image_url": "fiber_005.png"
   }
 ]

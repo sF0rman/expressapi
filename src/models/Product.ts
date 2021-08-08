@@ -9,6 +9,7 @@ const imageData: ProductImageData[] = require('../database/data/productImages.js
 
 interface ProductData {
   url: string;
+  thumbnail: string;
   en_title: string;
   no_title: string;
   en_description: string;
@@ -23,6 +24,10 @@ const Product = db.define<ProductDataModel>('product', {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true
+  },
+  thumbnail: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
   en_title: {
     type: DataTypes.STRING,
@@ -46,7 +51,7 @@ const Product = db.define<ProductDataModel>('product', {
   }
 });
 
-Product.sync().then(async () => {
+Product.sync({force: true}).then(async () => {
 
   ProductTable.belongsTo(Product, {
     foreignKey: 'product_url'
@@ -69,7 +74,7 @@ Product.sync().then(async () => {
     console.log('Products: Data added!');
   }
 
-  ProductImage.sync().then(async () => {
+  ProductImage.sync({force: true}).then(async () => {
     const images = await ProductImage.findAll();
     if (!images || !images.length) {
       console.log('ProductImage: Populating data...');
@@ -80,7 +85,7 @@ Product.sync().then(async () => {
     console.log('ProductImage: Unable to add data!', err);
   });
 
-  ProductTable.sync().then(async () => {
+  ProductTable.sync({force: true}).then(async () => {
     const tables = await ProductTable.findAll();
     if (!tables || !tables.length) {
       console.log('ProductTable: Populating data...');

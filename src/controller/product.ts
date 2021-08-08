@@ -10,7 +10,7 @@ import { ProductImage } from "../models/ProductImage";
 
 const getAllProducts: RequestHandler = async (req, res, next): Promise<void> => {
   try {
-    const found: any = await Product.findAll();
+    const found: any = await Product.findAll({ include: [ProductImage] });
     if (!found) {
       return next(new ResourceNotFoundError(Resource.Product));
     }
