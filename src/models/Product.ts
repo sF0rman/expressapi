@@ -14,7 +14,9 @@ interface ProductData {
   no_title: string;
   en_description: string;
   no_description: string;
-  product_image: string;
+  product_image?: string;
+  no_video?: string;
+  en_video?: string;
 }
 
 interface ProductDataModel extends ProductData, Model { }
@@ -46,6 +48,14 @@ const Product = db.define<ProductDataModel>('product', {
     allowNull: false
   },
   product_image: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  no_video: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  en_video: {
     type: DataTypes.STRING,
     allowNull: true
   }

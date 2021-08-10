@@ -1,14 +1,20 @@
 import { Color } from 'colors';
-import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express, { Router } from 'express';
-import { Server } from 'node:http';
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
 import { db } from './database/database';
 import { createRoutes } from './routing/routes';
 import { errorHandler } from './utils/errorHandler';
 const cors = require('cors');
 const colors: Color = require('colors');
+
+const ca1 = fs.readFileSync('sslcert/ca_1.pem', 'utf-8');
+const ca2 = fs.readFileSync('sslcert/ca_2.pem', 'utf-8');
+const privateKey = fs.readFileSync('sslcert/key.pem', 'utf-8');
+const certificate = fs.readFileSync('sslcert/cert.pem', 'utf-8');
 
 // Load environment variables.
 dotenv.config({ path: './.env' });
@@ -16,13 +22,15 @@ dotenv.config({ path: './.env' });
 let retryCount = 0;
 const boot = () => {
   // Start Server
+  const dev = process.env.DEVELOPMENT === 'true';
   console.clear();
   console.log('Starting...'.green);
-  console.log(process.env.DEVELOPMENT ? 'Development Mode' : 'Live Production Build');
+  console.log(dev ? 'Development Mode' : 'Live Production Build');
   // Start Database
   db.authenticate().then(async () => {
-    await db.sync(process.env.DEVELOPMENT ? { force: true } : { alter: true }); // force to reset db, alter to update tables.
+    await db.sync({ force: true }); // force to reset db, alter to update tables.
 
+    const credentials = { ca: [ca1, ca2], key: privateKey, cert: certificate };
     // Start server
     const app = express();
     const router: Router = createRoutes();
@@ -31,12 +39,20 @@ const boot = () => {
     app.use(cors());
     app.use('/api', router);
     app.use(errorHandler);
-    const HOST: string = process.env.SERVER_HOST || 'localhost';
-    const PORT: string = process.env.SERVER_PORT || '1337';
+    const PORT: string | number = process.env.SERVER_PORT || 0;
 
-    const listenServer = app.listen(0, function () {
-      console.log('Listening on port ', listenServer.address())
-    });
+    const httpServer = http.createServer(app);
+    const httpsServer = https.createServer(credentials, app);
+    if(dev) {
+      httpServer.listen(PORT, () => {
+        console.log('HTTP: Listening on ', httpServer.address());
+      });
+    } else {
+      httpsServer.listen(PORT, () => {
+        console.log('HTTPS: Listening on ', httpsServer.address());
+      });
+    }
+
   }).catch(err => {
     console.error('Unable to connect to the database:', err);
     if (retryCount < 5) {

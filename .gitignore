@@ -4,3 +4,4 @@ API.code-workspace
 dist
 .env
 media
+sslcert
