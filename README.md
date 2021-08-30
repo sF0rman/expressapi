@@ -11,7 +11,7 @@ DB_TYPE=postgres
 DB_USER=admin  
 DB_PASS=yourpassword  
 DB_NAME=yourdbname  
-DB_HEALTHCHECK=psql -U t3user -d postgres -c 'SELECT'  
+DB_HEALTHCHECK=psql -U admin -d postgres -c 'SELECT'  
 
 JWT_SECRET=yoursecretkey  
 JWT_EXPIRE=30d  
