@@ -1,5 +1,8 @@
+Node.js / Express API template to be used as a base for other projects
+
 # DotENV Variables
 
+````
 DEVELOPMENT=true  
 
 SERVER_PORT=1337  
@@ -15,11 +18,5 @@ DB_HEALTHCHECK=psql -U admin -d postgres -c 'SELECT'
 
 JWT_SECRET=yoursecretkey  
 JWT_EXPIRE=30d  
-COOKIE_EXPIRE=30  
-
-SMTP_HOST=smtp.google.com  
-SMTP_PORT=2525  
-SMTP_USER=myuser@gmail.com  
-SMTP_PASS=1234  
-FROM_EMAIL=noreply@expressapi.com  
-FROM_NAME=ExpressAPI  
+COOKIE_EXPIRE=30 
+````
